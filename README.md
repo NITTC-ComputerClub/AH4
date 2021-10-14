@@ -19,4 +19,5 @@ $git push
 初回のみ
 ```
 $git clone https://github.com/NITTC-ComputerClub.git
+$git clone git@github.com:NITTC-ComputerClub/AH4.git
 ```
