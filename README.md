@@ -21,3 +21,8 @@ $git push
 $git clone https://github.com/NITTC-ComputerClub.git
 $git clone git@github.com:NITTC-ComputerClub/AH4.git
 ```
+アカウント登録
+```
+$git config --global user.name "githubのusernameを入れる"
+$git config --global user.email githubを登録しているメールアドレス
+```
