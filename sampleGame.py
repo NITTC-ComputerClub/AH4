@@ -7,6 +7,7 @@ from pygame.locals import *
 
 point = 0
 
+#クラス、使えると便利(なくても大丈夫)
 class board:
     def __init__(self,row,col,posx,posy):
         self.row = row
@@ -32,11 +33,10 @@ class board:
             return (velx, -vely, count - 1)
         return (velx, vely, count)
         
+#得点増加
 def setPoint(add):
     global point
     point = point + add
-
-        
 
 def main():
     global point
@@ -53,12 +53,12 @@ def main():
 
     #スピードアップカウント、これが一定以上の値になったら
     speedUpCount = 0
-    #
+    #ボードの数、ゼロになったら終了
     boardCount = 25
 
     #玉の位置変数
     pointX = random.randint(30,470)
-    pointY = random.randint(80,200)
+    pointY = random.randint(150,200)
     #玉の速度の角度
     velAngle = random.randint(0,360)
     #玉の速度変数
@@ -71,6 +71,7 @@ def main():
 
     isFinish = False
 
+    #板のデータを作成
     boards = []
     for i in range(0,5):
         for j in range(0,3):
@@ -96,6 +97,7 @@ def main():
                     mouseX = 40
                 mouseY = 360
 
+        #終了していたらループの最初に戻す
         if(isFinish):
             continue
 
@@ -121,7 +123,7 @@ def main():
         if(pointY < 85):
             pointVelY = -pointVelY
 
-        if(pointY > 355):
+        if(pointY > 355 and pointY < 365):
             if((pointX > mouseX - 20) and (pointX < mouseX + 20)):
                 pointVelY = -pointVelY
 
@@ -151,7 +153,7 @@ def main():
             b.draw(screen)
         
         #玉が下にいったらFinishを表示させる
-        if(pointY > 400):
+        if(pointY > 400 or boardCount == 0):
             txt = font.render("Finish.",True,(0,0,0))
             result = font.render(str(point),True,(255,0,0))
             screen.blit(txt,[225,200])
