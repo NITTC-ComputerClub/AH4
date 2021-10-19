@@ -143,7 +143,7 @@ def main():
         #自分の板を描画
         pygame.draw.line(screen,(255,0,0),(mouseX - 20,mouseY),(mouseX + 20,mouseY),3)
         #玉の描画
-        pygame.draw.circle(screen,(0,0,255),(pointX,pointY),5)
+        pygame.draw.circle(screen,(0,0,255),(int(pointX),int(pointY)),5)
 
         score = font.render("score:" + str(point),True,(0,0,0))
         screen.blit(score,[350,40])
