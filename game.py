@@ -1,9 +1,15 @@
+from os import times
 import pygame
 import random
 import sys
 from pygame.locals import *
 
+name_list = list()
+score_list = list()
+data_list = list()
+
 def main():
+    global name_list,score_list,data_list
     pygame.init()
     
     screen=pygame.display.set_mode((960,720))
@@ -27,6 +33,7 @@ def main():
         pygame.image.load("naruto.png").convert_alpha(),    #ナルト
         pygame.image.load("spider.png").convert_alpha(),    #虫
     ]
+    readRankingFile()
 
     y=40
     x=210
@@ -38,14 +45,37 @@ def main():
     cx = random.randint(100,300)
     cy = random.randint(0,100)
 
-    flag = False
+    isGameFinish = False
 
     dif = 100
     difcount = 0
 
+    fps = 60
+    fpscount = 0
+
+    times = 0
+
     while(1):
-        ck.tick(60)
-        count = count + 1
+        ck.tick(fps)
+        fpscount += 1
+        count += 1
+        
+        for event in pygame.event.get():
+            if(event.type==QUIT):
+                pygame.quit()
+                sys.exit()
+            if(event.type == MOUSEMOTION):
+                x,y = event.pos
+                x = x - 100
+            if(event.type == MOUSEBUTTONDOWN):
+                flag = True
+        
+        screen.fill((255,255,255))
+
+        if(isGameFinish):
+            showRanking(screen)
+            pygame.display.update()
+            continue
 
         if(count >= dif):
             pos.append(( random.randint(180,460),random.randint(0,100),random.randint(0,7)))
@@ -55,9 +85,11 @@ def main():
             if(difcount == 10):
                 dif -= 1
                 difcount = 0
-            
         
-        screen.fill((255,255,255))
+        if(fpscount == fps):
+            times -= 1
+        time = font.render(str(times // 60) + ":" + str(times % 60),True,(0,0,0) )
+        screen.blit(time,[20,80])
         
         screen.blit(bowl,Rect(x,520,100,100))
         #pygame.draw.rect(screen,(200,200,100),Rect(200,y,20,50))
@@ -75,17 +107,42 @@ def main():
         scoreTxt = font.render(str(score),True,(0,0,0))
         screen.blit(scoreTxt,[10,20])
         
-        for event in pygame.event.get():
-            if(event.type==QUIT):
-                pygame.quit()
-                sys.exit()
-            if(event.type == MOUSEMOTION):
-                x,y = event.pos
-                x = x - 100
-            if(event.type == MOUSEBUTTONDOWN):
-                flag = True
-        
         pygame.display.update()
+
+
+def showRanking(screen):
+    global name_list,score_list,data_list
+
+    font = pygame.font.Font(None,40)
+    font2 = pygame.font.Font(None,64)
+    rank = font2.render("Ranking",True,(0,0,0))
+    screen.blit(rank,[400,160])
+    
+    for i in range(3):
+        num = score_list[i][1]
+        text = name_list[num] + "           " + score_list[i][0]
+        txt = font.render(text,True,(0,0,0))
+        screen.blit(txt,[320,240 + 50 * i])
+
+def readRankingFile():
+    global name_list,score_list,data_list
+    file = open("Ranking.csv",mode="r")
+
+    lines = file.read()
+    count = 0
+    for line in lines.split("\n"):
+        data = line.split(',')
+        if(count == 0):
+            count += 1
+            continue
+
+        name_list.append(data[0])
+        score_list.append([data[1],count - 1])
+        data_list.append(data[2])
+        count += 1
+    
+    score_list.sort(reverse=True)
+
 
 if(__name__=='__main__'):
     main()
