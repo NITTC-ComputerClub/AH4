@@ -1,3 +1,4 @@
+from math import e
 from os import times
 import pygame
 import random
@@ -45,7 +46,8 @@ def main():
     cx = random.randint(100,300)
     cy = random.randint(0,100)
 
-    isGameFinish = False
+    isMenu = True
+    isRanking = False
 
     dif = 100
     difcount = 0
@@ -53,7 +55,7 @@ def main():
     fps = 60
     fpscount = 0
 
-    times = 0
+    times = 30
 
     while(1):
         ck.tick(fps)
@@ -69,11 +71,27 @@ def main():
                 x = x - 100
             if(event.type == MOUSEBUTTONDOWN):
                 flag = True
-        
+            if(event.type == KEYDOWN):
+                if(event.key == K_SPACE):
+                    if(isMenu):
+                        isMenu = False
+                        isRanking = False
+                    elif(isRanking):
+                        times = 30
+                        isMenu = True
+                        isRanking = False
+                elif(event.key == K_r and isMenu):
+                    isRanking = True
+                    isMenu = False
         screen.fill((255,255,255))
 
-        if(isGameFinish):
+        if(isRanking):
             showRanking(screen)
+            pygame.display.update()
+            continue
+
+        if(isMenu):
+            Menu(screen)
             pygame.display.update()
             continue
 
@@ -86,10 +104,22 @@ def main():
                 dif -= 1
                 difcount = 0
         
-        if(fpscount == fps):
+        if(fpscount >= fps):
             times -= 1
-        time = font.render(str(times // 60) + ":" + str(times % 60),True,(0,0,0) )
+            fpscount = 0
+        
+        plus = ":"
+        if(times % 60 < 10):
+            plus = ":0"
+        t = str(times // 60) + plus + str(times % 60)
+        time = font.render(t,True,(0,0,0) )
         screen.blit(time,[20,80])
+
+        if(times <= 0):
+            writeRainking("",score)
+            readRankingFile()
+            isMenu = False
+            isRanking = True
         
         screen.blit(bowl,Rect(x,520,100,100))
         #pygame.draw.rect(screen,(200,200,100),Rect(200,y,20,50))
@@ -105,7 +135,7 @@ def main():
                 del pos[j]
         
         scoreTxt = font.render(str(score),True,(0,0,0))
-        screen.blit(scoreTxt,[10,20])
+        screen.blit(scoreTxt,[20,30])
         
         pygame.display.update()
 
@@ -113,16 +143,20 @@ def main():
 def showRanking(screen):
     global name_list,score_list,data_list
 
-    font = pygame.font.Font(None,40)
-    font2 = pygame.font.Font(None,64)
-    rank = font2.render("Ranking",True,(0,0,0))
-    screen.blit(rank,[400,160])
+    font = pygame.font.Font("sjis_sp_setofont.ttf",40)
+    font2 = pygame.font.Font("sjis_sp_setofont.ttf",64)
+    font3 = pygame.font.Font("sjis_sp_setofont.ttf",30)
+    rank = font2.render("ランキング",True,(0,0,0))
+    screen.blit(rank,[360,160])
     
     for i in range(3):
         num = score_list[i][1]
-        text = name_list[num] + "           " + score_list[i][0]
+        text = name_list[num] + "           " + str(score_list[i][0])
         txt = font.render(text,True,(0,0,0))
-        screen.blit(txt,[320,240 + 50 * i])
+        screen.blit(txt,[280,240 + 50 * i])
+
+    space = font3.render("Spaceキーを押してメニューに戻る",True,(0,0,0))
+    screen.blit(space,[480,600])
 
 def readRankingFile():
     global name_list,score_list,data_list
@@ -137,12 +171,35 @@ def readRankingFile():
             continue
 
         name_list.append(data[0])
-        score_list.append([data[1],count - 1])
+        score_list.append([int(data[1]),count - 1])
         data_list.append(data[2])
         count += 1
     
     score_list.sort(reverse=True)
+    print(score_list)
 
+def writeRainking(name, score):
+    file = open("Ranking.csv",mode="a")
+
+    csv = "\nguests" + "," + str(score) + ",0"
+
+    file.write(csv)
+
+
+def Menu(screen):
+    screen.fill((255,255,255))
+
+    font1 = pygame.font.Font("sjis_sp_setofont.ttf",64)
+    font2 = pygame.font.Font("sjis_sp_setofont.ttf",40)
+    
+    title = font1.render("ラーメン食べるのあきラーメン",True,(0,0,0))
+    screen.blit(title,[90,250])
+
+    space = font2.render("SPACEキーを押してゲームをスタート",True,(0,0,0))
+    screen.blit(space,[200,450])
+
+    rank = font2.render("Rキーでランキング",True,(0,0,0))
+    screen.blit(rank,[280,550])
 
 if(__name__=='__main__'):
     main()
