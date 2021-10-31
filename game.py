@@ -12,6 +12,7 @@ data_list = list()
 def main():
     global name_list,score_list,data_list
     pygame.init()
+    pygame.mixer.init()
     
     screen=pygame.display.set_mode((960,720))
 
@@ -23,6 +24,8 @@ def main():
     sizes = [(100,100),(100,100),(100,60),(100,100),(40,100),(100,100),(100,100),(100,100)]
     speed = [1,1,2,2,3,2,3,4]
 
+    sound1 = pygame.mixer.Sound("itadaki.wav")
+    
     bowl = pygame.image.load("bowl.png").convert_alpha()
     pics = [
         pygame.image.load("noodles.png").convert_alpha(),   #麺
@@ -117,6 +120,7 @@ def main():
 
         if(times <= 0):
             writeRainking("",score)
+            sound1.play()
             readRankingFile()
             isMenu = False
             isRanking = True
@@ -130,7 +134,7 @@ def main():
             screen.blit(pics[num],Rect(pos[j][0],pos[j][1],sizes[num][0],sizes[num][1]))
             pos[j] = (pos[j][0],pos[j][1] + speed[num] ,pos[j][2])
 
-            if((pos[j][1] > 540) and (x < pos[j][0] < (x + 200 - sizes[num][0]))):
+            if((640 > pos[j][1] > 540) and (x < pos[j][0] < (x + 200 - sizes[num][0]))):
                 score += point[num]
                 del pos[j]
         
@@ -147,13 +151,15 @@ def showRanking(screen):
     font2 = pygame.font.Font("sjis_sp_setofont.ttf",64)
     font3 = pygame.font.Font("sjis_sp_setofont.ttf",30)
     rank = font2.render("ランキング",True,(0,0,0))
-    screen.blit(rank,[360,160])
+    screen.blit(rank,[360,60])
     
     for i in range(3):
         num = score_list[i][1]
         text = name_list[num] + "           " + str(score_list[i][0])
         txt = font.render(text,True,(0,0,0))
-        screen.blit(txt,[280,240 + 50 * i])
+        screen.blit(txt,[280,140 + 50 * i])
+
+    result = pygame.image.load("").convert_alpha()
 
     space = font3.render("Spaceキーを押してメニューに戻る",True,(0,0,0))
     screen.blit(space,[480,600])
