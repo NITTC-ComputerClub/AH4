@@ -98,6 +98,20 @@ def main():
             Menu(screen)
             pygame.display.update()
             continue
+        
+        if(times <= 0):
+            writeRainking("",score)
+            sound1.play()
+            readRankingFile()
+            isMenu = False
+            isRanking = True
+            score = 0
+            time = 30
+            dif = 100
+            difcount = 0
+            fpscount = 0
+            pos = list()
+        
 
         if(count >= dif):
             pos.append(( random.randint(180,460),random.randint(0,100),random.randint(0,7)))
@@ -119,18 +133,6 @@ def main():
         time = font.render(t,True,(0,0,0) )
         screen.blit(time,[20,80])
 
-        if(times <= 0):
-            writeRainking("",score)
-            sound1.play()
-            readRankingFile()
-            isMenu = False
-            isRanking = True
-            point = 0
-            time = 30
-            dif = 100
-            difcount = 0
-            fpscount = 0
-        
         screen.blit(bowl,Rect(x,520,100,100))
         #pygame.draw.rect(screen,(200,200,100),Rect(200,y,20,50))
 
@@ -148,7 +150,6 @@ def main():
         screen.blit(scoreTxt,[20,30])
         
         pygame.display.update()
-
 
 def showRanking(screen):
     global name_list,score_list,data_list
