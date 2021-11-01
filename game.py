@@ -15,6 +15,7 @@ def main():
     pygame.mixer.init()
     
     screen=pygame.display.set_mode((960,720))
+    pygame.display.set_caption("ラーメン作るのあきラーメン")
 
     font = pygame.font.Font(None,40)
     
@@ -159,7 +160,7 @@ def showRanking(screen):
         txt = font.render(text,True,(0,0,0))
         screen.blit(txt,[280,140 + 50 * i])
 
-    result = pygame.image.load("").convert_alpha()
+    #result = pygame.image.load("").convert_alpha()
 
     space = font3.render("Spaceキーを押してメニューに戻る",True,(0,0,0))
     screen.blit(space,[480,600])
@@ -182,7 +183,6 @@ def readRankingFile():
         count += 1
     
     score_list.sort(reverse=True)
-    print(score_list)
 
 def writeRainking(name, score):
     file = open("Ranking.csv",mode="a")
@@ -198,8 +198,8 @@ def Menu(screen):
     font1 = pygame.font.Font("sjis_sp_setofont.ttf",64)
     font2 = pygame.font.Font("sjis_sp_setofont.ttf",40)
     
-    title = font1.render("ラーメン食べるのあきラーメン",True,(0,0,0))
-    screen.blit(title,[90,250])
+    title = font1.render("ラーメン作るのあきラーメン",True,(0,0,0))
+    screen.blit(title,[150,250])
 
     space = font2.render("SPACEキーを押してゲームをスタート",True,(0,0,0))
     screen.blit(space,[200,450])
