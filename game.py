@@ -25,18 +25,18 @@ def main():
     sizes = [(100,100),(100,100),(100,60),(100,100),(40,100),(100,100),(100,100),(100,100)]
     speed = [1,1,2,2,3,2,3,4]
 
-    sound1 = pygame.mixer.Sound("itadaki.wav")
+    sound1 = pygame.mixer.Sound("music/itadaki.wav")
     
-    bowl = pygame.image.load("bowl.png").convert_alpha()
+    bowl = pygame.image.load("image/bowl.png").convert_alpha()
     pics = [
-        pygame.image.load("noodles.png").convert_alpha(),   #麺
-        pygame.image.load("pork.png").convert_alpha(),      #チャーシュー
-        pygame.image.load("menma.png").convert_alpha(),     #メンマ
-        pygame.image.load("leek1.png").convert_alpha(),     #ネギ
-        pygame.image.load("leek2.png").convert_alpha(),     #ネギ2
-        pygame.image.load("egg.png").convert_alpha(),       #卵
-        pygame.image.load("naruto.png").convert_alpha(),    #ナルト
-        pygame.image.load("spider.png").convert_alpha(),    #虫
+        pygame.image.load("image/noodles.png").convert_alpha(),   #麺
+        pygame.image.load("image/pork.png").convert_alpha(),      #チャーシュー
+        pygame.image.load("image/menma.png").convert_alpha(),     #メンマ
+        pygame.image.load("image/leek1.png").convert_alpha(),     #ネギ
+        pygame.image.load("image/leek2.png").convert_alpha(),     #ネギ2
+        pygame.image.load("image/egg.png").convert_alpha(),       #卵
+        pygame.image.load("image/naruto.png").convert_alpha(),    #ナルト
+        pygame.image.load("image/spider.png").convert_alpha(),    #虫
     ]
     readRankingFile()
 
@@ -148,9 +148,9 @@ def main():
 def showRanking(screen):
     global name_list,score_list,data_list
 
-    font = pygame.font.Font("sjis_sp_setofont.ttf",40)
-    font2 = pygame.font.Font("sjis_sp_setofont.ttf",64)
-    font3 = pygame.font.Font("sjis_sp_setofont.ttf",30)
+    font = pygame.font.Font("font/sjis_sp_setofont.ttf",40)
+    font2 = pygame.font.Font("font/sjis_sp_setofont.ttf",64)
+    font3 = pygame.font.Font("font/sjis_sp_setofont.ttf",30)
     rank = font2.render("ランキング",True,(0,0,0))
     screen.blit(rank,[360,60])
     
@@ -167,7 +167,7 @@ def showRanking(screen):
 
 def readRankingFile():
     global name_list,score_list,data_list
-    file = open("Ranking.csv",mode="r")
+    file = open("data/Ranking.csv",mode="r")
 
     lines = file.read()
     count = 0
@@ -185,7 +185,7 @@ def readRankingFile():
     score_list.sort(reverse=True)
 
 def writeRainking(name, score):
-    file = open("Ranking.csv",mode="a")
+    file = open("data/Ranking.csv",mode="a")
 
     csv = "\nguests" + "," + str(score) + ",0"
 
@@ -195,8 +195,8 @@ def writeRainking(name, score):
 def Menu(screen):
     screen.fill((255,255,255))
 
-    font1 = pygame.font.Font("sjis_sp_setofont.ttf",64)
-    font2 = pygame.font.Font("sjis_sp_setofont.ttf",40)
+    font1 = pygame.font.Font("font/sjis_sp_setofont.ttf",64)
+    font2 = pygame.font.Font("font/sjis_sp_setofont.ttf",40)
     
     title = font1.render("ラーメン作るのあきラーメン",True,(0,0,0))
     screen.blit(title,[150,250])
