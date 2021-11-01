@@ -125,6 +125,11 @@ def main():
             readRankingFile()
             isMenu = False
             isRanking = True
+            point = 0
+            time = 30
+            dif = 100
+            difcount = 0
+            fpscount = 0
         
         screen.blit(bowl,Rect(x,520,100,100))
         #pygame.draw.rect(screen,(200,200,100),Rect(200,y,20,50))
